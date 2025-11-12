@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 import os
 
 # ===============================
-# 🌈 CONFIGURATION GÉNÉRALE
+# CONFIGURATION GÉNÉRALE
 # ===============================
 st.set_page_config(
     page_title="Prédiction du Diabète – Pima Indians",
@@ -18,9 +18,9 @@ st.set_page_config(
 )
 
 # ===============================
-# 🩺 TITRE ET INTRO
+#  TITRE ET INTRO
 # ===============================
-st.title("🩺 Application de Prédiction du Diabète")
+st.title(" Application de Prédiction du Diabète")
 st.markdown("""
 Bienvenue dans cette application de **Machine Learning** basée sur le dataset *Pima Indians Diabetes*.
 Entrez les données médicales d’un patient pour **estimer le risque de diabète**.
@@ -75,7 +75,7 @@ model.fit(X_scaled, y)
 # ===============================
 # 🧮 ENTRÉES UTILISATEUR
 # ===============================
-st.sidebar.header("🧠 Paramètres du patient")
+st.sidebar.header(" Paramètres du patient")
 
 pregnancies = st.sidebar.number_input("Grossesses", 0, 20, 2)
 glucose = st.sidebar.slider("Glucose (mg/dL)", 50, 200, 100)
@@ -105,7 +105,7 @@ st.dataframe(user_data, use_container_width=True)
 # ===============================
 user_scaled = scaler.transform(user_data)
 
-if st.button("🔮 Lancer la prédiction"):
+if st.button(" Lancer la prédiction"):
     pred = model.predict(user_scaled)[0]
     proba = model.predict_proba(user_scaled)[0][1] * 100
 
@@ -118,7 +118,7 @@ if st.button("🔮 Lancer la prédiction"):
     # ===============================
     # 📊 IMPORTANCE DES VARIABLES
     # ===============================
-    st.subheader("📊 Importance des variables selon le modèle")
+    st.subheader(" Importance des variables selon le modèle")
 
     importances = pd.DataFrame({
         "Variable": X.columns,
@@ -133,7 +133,7 @@ if st.button("🔮 Lancer la prédiction"):
 # ===============================
 # 📈 VISUALISATION DU DATASET
 # ===============================
-with st.expander("📈 Voir un aperçu statistique du dataset"):
+with st.expander(" Voir un aperçu statistique du dataset"):
     col1, col2 = st.columns(2)
 
     with col1:
