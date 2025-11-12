@@ -57,6 +57,12 @@ st.success(f"✅ Données chargées depuis : `{csv_path}`")
 # ===============================
 # 🔢 PRÉPARATION DES DONNÉES
 # ===============================
+
+# --- Nettoyage automatique des colonnes numériques ---
+for col in df.columns:
+    if df[col].dtype == 'object':  # si le contenu est du texte (souvent à cause des virgules)
+        df[col] = df[col].str.replace(',', '.', regex=False).astype(float)
+
 X = df.drop("Outcome", axis=1)
 y = df["Outcome"]
 
