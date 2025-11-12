@@ -6,6 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
+import os
 
 # ===============================
 # 🌈 CONFIGURATION GÉNÉRALE
@@ -29,21 +30,39 @@ st.markdown("---")
 # ===============================
 # 📂 CHARGEMENT DU DATASET
 # ===============================
-try:
-    df = pd.read_csv("data/diabetes.csv")
-except FileNotFoundError:
-    st.error("⚠️ Le fichier `data/diabetes.csv` est introuvable. Vérifie le chemin du dataset.")
+
+# Chemins possibles
+possible_paths = [
+    "data/diabetes.csv",
+    "diabetes.csv",
+    "./diabetes.csv",
+    "/app/data/diabetes.csv",   # pour Streamlit Cloud
+]
+
+csv_path = None
+for path in possible_paths:
+    if os.path.exists(path):
+        csv_path = path
+        break
+
+if csv_path is None:
+    st.error("⚠️ Le fichier `diabetes.csv` est introuvable. "
+             "Assure-toi qu'il se trouve dans un dossier `data/` ou dans le même répertoire que ce script.")
     st.stop()
 
-# Variables explicatives et cible
+df = pd.read_csv(csv_path, sep=";") if ";" in open(csv_path).readline() else pd.read_csv(csv_path)
+
+st.success(f"✅ Données chargées depuis : `{csv_path}`")
+
+# ===============================
+# 🔢 PRÉPARATION DES DONNÉES
+# ===============================
 X = df.drop("Outcome", axis=1)
 y = df["Outcome"]
 
-# Normalisation
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Entraînement du modèle
 model = RandomForestClassifier(n_estimators=200, class_weight='balanced', random_state=42)
 model.fit(X_scaled, y)
 
@@ -124,3 +143,4 @@ with st.expander("📈 Voir un aperçu statistique du dataset"):
         st.pyplot(fig2)
 
 st.caption("🧬 Application développée avec Streamlit, Pandas et Scikit-learn – © 2025")
+
